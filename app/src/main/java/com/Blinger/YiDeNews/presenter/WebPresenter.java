@@ -1,5 +1,8 @@
 package com.Blinger.YiDeNews.presenter;
 
+import android.util.Log;
+import android.widget.Toast;
+
 import com.Blinger.base.base.BasePresenter;
 import com.Blinger.base.base.BaseView;
 import com.Blinger.base.utils.LogUtils;
@@ -39,7 +42,7 @@ public class WebPresenter extends BasePresenter<BaseView>{
                     public void onSuccess(List<UserTailBean> userTailBean) {
                         //LogUtils.d(Constant.debugName,"into success");
                         //LogUtils.d(Constant.debugName,userTailBean.get(0).getInfo()+"success");
-                        mView.showData(userTailBean.get(0));
+                        mView.showData(userTailBean);
                     }
 
                     @Override
@@ -93,6 +96,13 @@ public class WebPresenter extends BasePresenter<BaseView>{
                     public void onSuccess(List<CommentBean> commentBeans) {
                         //LogUtils.d(Constant.debugName+"getReviewList","into success");
                         mView.showData(commentBeans);
+                        int size = commentBeans.size();
+                        Log.d("cnm", String.valueOf(size));
+                        if (size > 0) {
+                            if (commentBeans.get(0).getObject() != null) {
+                                Log.d("cnm", String.valueOf(commentBeans.get(0).getObject().toString()));
+                            }
+                        }
                     }
 
                     @Override

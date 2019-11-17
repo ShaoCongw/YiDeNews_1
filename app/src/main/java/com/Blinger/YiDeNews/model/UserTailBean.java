@@ -32,4 +32,9 @@ public class UserTailBean {
     public void setObject(Object object) {
         this.object = object;
     }
+
+    @Override
+    public String toString() {
+        return "info:" + info + " ,status:" + status + ",object" + object;
+    }
 }

@@ -82,16 +82,16 @@
                 />
 
             <ImageView
+                android:id="@+id/im_zan"
                 android:layout_width="@dimen/dp_48"
                 android:layout_height="@dimen/dp_48"
-                android:src="@drawable/zan_grey"
                 android:layout_below="@+id/layout"
-                android:id="@+id/im_zan"
-                android:gravity="center"
-                android:tag="un_zan"
+                android:layout_centerHorizontal="true"
                 android:clickable="true"
                 android:focusable="true"
-                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:src="@drawable/zan_grey"
+                android:tag="un_zan"
 
                 />
             <TextView

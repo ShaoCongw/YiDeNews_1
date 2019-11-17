@@ -40,7 +40,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             this.acclaimNumList = acclaimNumList;
             this.reviewContentList = reviewContentList;
             this.statusList = statusList;
-        this.commentIdList = commentIdList;
+            this.commentIdList = commentIdList;
 
             LogUtils.d(Constant.debugName+"recycler"," into construct function of RecyclerViewAdapter");
         }

@@ -77,4 +77,9 @@ public class Comment {
     public void setComment_unique_key(String comment_unique_key) {
         this.comment_unique_key = comment_unique_key;
     }
+
+    @Override
+    public String toString() {
+        return name + "," +commentTime + "," + imageType + "," + content;
+    }
 }

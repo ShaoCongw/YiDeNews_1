@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -278,6 +279,10 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
         time();
     }
 
+    /**
+     * 设置网页文件大小
+     * @param type
+     */
     private void setType(int type) {
         switch (type) {
             case 1:
@@ -329,6 +334,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
         mRecyclerViewAdapter.addData(userNameList.size(), location, TimeUtils.getTime() + "", 0, reviewContent, 0, imageType, reviewId);
 
         //Long newsId,Long reviewId,String reviewType,String reviewContent,String UID
+//        Log.d("test",mData.getUniquekey() +","+reviewId +","+reviewContent+","+","+uuid+","+TimeUtils.getTime()+","+IPUtils.getIPAddress(App.getContext()));
         mPresenter.postReview(mData.getUniquekey(), reviewId, "1", reviewContent, uuid, TimeUtils.getTime(), IPUtils.getIPAddress(App.getContext()));
     }
 
@@ -526,6 +532,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     public void showData(Object obj) {
         if (obj instanceof List) {
             if (((List) obj).get(0) instanceof CommentBean) {
+                Toast.makeText(this,"评论数量：",Toast.LENGTH_SHORT).show();
                 ///userNameList,timeList,acclaimNumList,reviewContentList
                 List<CommentBean> list = (List<CommentBean>) obj;
 
@@ -554,9 +561,11 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
                 tvZanNum.setText(articleAcclaimCount + "赞");
                 initRecyclerView();
             }
+
             if (((List) obj).get(0) instanceof UserTailBean) {
                 List<UserTailBean> list = (List<UserTailBean>) obj;
-//                LogUtils.d(Constant.debugName, list.get(0).getInfo());
+                LogUtils.d(Constant.debugName, list.get(0).toString());
+
             }
         }
     }
@@ -565,13 +574,27 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     public void showError(String msg) {
         switch (WebPresenter.getRequireType()) {
             case 0:
+                //上传历史
                 initRecyclerView();
 //                LogUtils.e(Constant.debugName + "type = " + 0, msg);
+                break;
+            case 1:
+                //上传评论失败
+                Toast.makeText(this,"上传评论失败",Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                //获取评论列表失败
+                Toast.makeText(this,"获取评论列表失败",Toast.LENGTH_SHORT).show();
+                break;
+            case 3:
+                //更新点赞数失败
+                Toast.makeText(this,"更新文章点赞数失败",Toast.LENGTH_SHORT).show();
                 break;
             default:
 //                LogUtils.e(Constant.debugName + "type = other", msg);
                 break;
         }
+
     }
 
 }

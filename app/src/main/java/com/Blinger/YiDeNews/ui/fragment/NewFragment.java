@@ -343,7 +343,7 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
                     showToast(list.size());
                 } else if (((List) obj).get(0) instanceof UserInfoBean) {
                     List<UserInfoBean> list = (List<UserInfoBean>) obj;
-//                    LogUtils.d(Constant.debugName + "postEnjoy", list.get(0).getInfo());
+                    LogUtils.d(Constant.debugName + "postEnjoy", list.get(0).toString());
                     ToastUtil.getInstance().showSuccess(App.getContext(), "反馈成功");
                 }
             }

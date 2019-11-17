@@ -51,6 +51,7 @@ public class InputTextMsgDialog extends AppCompatDialog {
     public InputTextMsgDialog(@NonNull Context context, int theme) {
         super(context, theme);
         this.mContext = context;
+        //dialog弹出窗口变暗，退出恢复
         this.getWindow().setWindowAnimations(R.style.main_menu_animstyle);
         init();
         setLayout();
