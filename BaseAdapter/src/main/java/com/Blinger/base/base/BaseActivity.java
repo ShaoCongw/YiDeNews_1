@@ -54,6 +54,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
         mPresenter = createPresenter();
         setContentView(getResourceId());
         StatusBarUtils.setColorNoTranslucent(this, Color.WHITE);
+
         ButterKnife.bind(this);
         initView(savedInstanceState);
         initData();

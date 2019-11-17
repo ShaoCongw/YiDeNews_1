@@ -3,6 +3,7 @@ package com.Blinger.YiDeNews.ui.fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -53,8 +54,9 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
     RecyclerView mRecyclerView;
     @Bind(R.id.refresh)
     SmartRefreshLayout mRefresh;
-    @Bind(R.id.up_arrow_iv)
-    CircleImageView upArrowIv;
+    @Bind(R.id.up_float_bt)
+//    CircleImageView upArrowIv;
+    FloatingActionButton upFloatButton;
     @Bind(R.id.tv_toast)
     TextView tvToast;
     @Bind(R.id.rl_top_toast)
@@ -148,7 +150,7 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
                           //刷新后在最近一次点击的新闻底部显示 “上次观看到这里”
                         .setVisible(R.id.item_rl_tail_toast,(position == isVisible))
                         .itemView.setOnClickListener(view -> {
-                            //前一为作者这里的逻辑有问题吧，这样更新newSignPosition
+                            //前一位作者这里的逻辑有问题吧，这样更新newSignPosition
                             //从顶部的新闻向下点击没有问题，反之“上次观看的提示”会出现在位置靠上新闻下
 //                                if (newSignPosition > position){
 //                                    newSignPosition = position;
@@ -166,35 +168,35 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
         };
         //LogUtils.d(Constant.debugName + "NewsFragment   ", "category is " + category);
         mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                int firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
-                if (firstVisibleItem == 0) {
-                    if (!isShow) {
-                        isShow = true;
-                        upArrowIv.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    if (disy > 25 && isShow) {
-                        isShow = false;
-                        upArrowIv.setVisibility(View.GONE);
-                        disy = 0;
-                    }
-                    if (disy < -25 && !isShow) {
-                        isShow = true;
-                        upArrowIv.setVisibility(View.VISIBLE);
-                        disy = 0;
-                    }
-                }
-
-                if ((isShow && dy > 0) || (!isShow && dy < 0)) {
-                    disy += dy;
-                }
-            }
-        });
+//        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//
+//                int firstVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstCompletelyVisibleItemPosition();
+//                if (firstVisibleItem == 0) {
+//                    if (!isShow) {
+//                        isShow = true;
+//                        upFloatButton.setVisibility(View.VISIBLE);
+//                    }
+//                } else {
+//                    if (disy > 25 && isShow) {
+//                        isShow = false;
+//                        upFloatButton.setVisibility(View.GONE);
+//                        disy = 0;
+//                    }
+//                    if (disy < -25 && !isShow) {
+//                        isShow = true;
+//                        upFloatButton.setVisibility(View.VISIBLE);
+//                        disy = 0;
+//                    }
+//                }
+//
+//                if ((isShow && dy > 0) || (!isShow && dy < 0)) {
+//                    disy += dy;
+//                }
+//            }
+//        });
 
         setRefreshListener();
         mData = getArguments().getParcelable(NewFragment.class.getSimpleName());
@@ -373,7 +375,7 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.up_arrow_iv)
+    @OnClick(R.id.up_float_bt)
     public void onViewClicked() {
         mRecyclerView.smoothScrollToPosition(0);
         mRefresh.autoRefresh();

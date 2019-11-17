@@ -445,9 +445,10 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
                 } else {
                     imZan.setTag("un_zan");
                     imZan.setImageResource(R.drawable.zan_grey);
-                    Toast toast = Toast.makeText(mActivity, null, Toast.LENGTH_SHORT);
-                    toast.setText("取消点赞");
-                    toast.show();
+//                    Toast toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
+//                    toast.setText("取消点赞");
+//                    toast.show();
+                    ToastUtil.getInstance().showSuccess(getApplicationContext(), "取消点赞");
                     int i = --articleAcclaimCount;
                     tvZanNum.setText(i + "赞");//设置赞数
                     mPresenter.postAcclaim(mData.getUniquekey(), uuid, 1, -1);//文章点赞-1

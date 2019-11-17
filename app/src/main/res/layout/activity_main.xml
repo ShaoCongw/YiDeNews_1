@@ -5,10 +5,12 @@
     android:id="@+id/drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    android:fitsSystemWindows="true"
     android:overScrollMode="never"
     tools:context=".ui.activity.MainActivity">
+<!--前面的大哥用他的方式实现沉浸侧滑栏需要下面两句-->
+<!--    android:background="@android:color/white"-->
+<!--    android:fitsSystemWindows="true"-->
+
 
 
     <LinearLayout
@@ -22,17 +24,36 @@
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@color/colorMain">
+            android:layout_height="wrap_content"
+            android:background="@drawable/toolbar_bg"
+            android:fitsSystemWindows="true"
+            >
 
-            <TextView
-                android:id="@+id/tv_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:text="易得快报"
-                android:textColor="@color/colorWhite"
-                android:textSize="@dimen/sp_18" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_30"
+                    android:src="@mipmap/icon_news"
+                    android:layout_centerVertical="true"/>
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/dp_50"
+
+                    android:paddingTop="@dimen/dp_5"
+                    android:paddingBottom="@dimen/dp_5"
+                    android:background="@drawable/toobar_title_bg"
+                    android:gravity="center"
+                    android:text="易得快报"
+                    android:textColor="@color/tab_text"
+                    android:textSize="@dimen/sp_15" />
+
+            </RelativeLayout>
+
 
         </android.support.v7.widget.Toolbar>
 

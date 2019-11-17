@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--modified by 逃课 2019/11/17
+    新增floatactionbar随recycleview滑动逐渐消失
+-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    >
 
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
         android:id="@+id/refresh"
@@ -19,7 +26,7 @@
             />
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -41,22 +48,42 @@
                     android:textColor="#3393D5"
                     android:textSize="12sp" />
             </RelativeLayout>
+
         </RelativeLayout>
+
 
 
 
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
-    <com.Blinger.base.utils.CircleImageView
-        android:id="@+id/up_arrow_iv"
-        android:layout_width="@dimen/dp_38"
-        android:layout_height="@dimen/dp_38"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/dp_12"
-        android:layout_marginBottom="@dimen/dp_88"
-        android:padding="@dimen/dp_5"
-        android:src="@drawable/arrow_up2"
-        android:background="@color/text_bottom_tm"/>
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/up_float_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/icon_up"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_88"
+            app:backgroundTint="@color/colorMain"
+            app:elevation="@dimen/dp_8"
+            app:layout_behavior="com.Blinger.YiDeNews.utils.ScrollAwareBehavior"
+            />
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+<!--    <com.Blinger.base.utils.CircleImageView-->
+<!--        android:id="@+id/up_arrow_iv"-->
+<!--        android:layout_width="@dimen/dp_38"-->
+<!--        android:layout_height="@dimen/dp_38"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_alignParentRight="true"-->
+<!--        android:layout_marginRight="@dimen/dp_12"-->
+<!--        android:layout_marginBottom="@dimen/dp_88"-->
+<!--        android:padding="@dimen/dp_5"-->
+<!--        android:src="@drawable/arrow_up2"-->
+<!--        android:background="@color/text_bottom_tm"/>-->
+
 
 </RelativeLayout>
+

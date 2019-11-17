@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -53,6 +54,10 @@ import butterknife.ButterKnife;
  * 邮箱：1760567382@qq.com
  * 功能：
  */
+
+/**
+ * modified by 逃课 on 2019/11/17
+ */
 public class MainActivity extends BaseActivity {
     @Bind(R.id.toolBar)
     Toolbar mToolBar;
@@ -66,13 +71,8 @@ public class MainActivity extends BaseActivity {
     TabLayout mainTl;
     @Bind(R.id.fragment_vp)
     ViewPager fragmentVp;
-//    String[] newsTypeTitle = {"头条","社会","国内","娱乐","体育","军事","科技","财经","时尚"};
-
-
-//    private HashMap<String, NewFragment> fragments = new HashMap<>();
-//    private List<Fragment> fragmentList = new ArrayList<>();
+    //用户选择的推荐引擎方式
     public static int index;
-
 
 
     @Override
@@ -90,18 +90,16 @@ public class MainActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-        StatusBarUtils.setColorNoTranslucentForDrawerLayout(this, mDrawer, Color.parseColor("#f54343"));
+        //前面的带鸽搞的沉浸式侧滑栏
+        //StatusBarUtils.setColorNoTranslucentForDrawerLayout(this, mDrawer, Color.TRANSPARENT);
         setSupportActionBar(mToolBar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolBar.setNavigationIcon(R.mipmap.icon);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        StatusBarUtils.transparentBar(this);
+
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowTitleEnabled(false);
         hideNavigationViewScrollBars();
 
         mainTl.setTabMode(TabLayout.MODE_SCROLLABLE);
-        //List<String> titles = Arrays.asList(newsTypeTitle);
-//        mainTl.addTab(mainTl.newTab().setText("头条"));
-//        mainTl.addTab(mainTl.newTab().setText("社会"));
-//        mainTl.addTab(mainTl.newTab().setText("国内"));
         FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager());
         fragmentVp.setAdapter(fragmentAdapter);
         mainTl.setupWithViewPager(fragmentVp);
@@ -277,5 +275,6 @@ public class MainActivity extends BaseActivity {
 //        });
         return true;
     }
-
 }
+
+

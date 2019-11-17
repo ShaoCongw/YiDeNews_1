@@ -10,6 +10,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -27,6 +28,12 @@ import java.lang.reflect.Method;
  * 时间：2019/4/1
  * 邮箱：1760567382@qq.com
  * 功能：
+ */
+
+/**
+ * modified by 逃课 on 2019/11/17
+ * 后面来的的小可爱找我请联系(*^_^*)
+ * 2552744904@qq.com
  */
 
 public class StatusBarUtils
@@ -850,4 +857,21 @@ public class StatusBarUtils
         blue = (int) (blue * a + 0.5);
         return 0xff << 24 | red << 16 | green << 8 | blue;
     }
+    /**
+     * 前面的大哥是真能写，膜，800多行的工具类。。。。
+     * 简单粗暴地实现沉浸式状态栏,同时也不影响上一位大哥的侧滑栏的沉浸式体验
+     */
+    public static void transparentBar(Activity activity){
+        if (Build.VERSION.SDK_INT >= 21) {
+            Log.d("shaocong","i love you");
+            View decorView = activity.getWindow().getDecorView();
+            int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            decorView.setSystemUiVisibility(option);
+            activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }else{
+            Log.d("shaocong","版本过低");
+        }
+    }
+
 }

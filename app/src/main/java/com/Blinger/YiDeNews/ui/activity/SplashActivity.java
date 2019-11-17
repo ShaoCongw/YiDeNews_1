@@ -60,7 +60,7 @@ import io.reactivex.schedulers.Schedulers;
      * 作者：310Lab
  * 时间：2019/4/2 17:03
  * 邮箱：1760567382@qq.com
- * 功能：
+ * 功能：启动页
  */
 public class SplashActivity extends BaseActivity<SplashPresenter> implements BaseView {
     private double latitude = 0.0;
