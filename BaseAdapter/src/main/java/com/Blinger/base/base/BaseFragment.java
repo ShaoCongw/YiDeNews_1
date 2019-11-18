@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
  * 功能：
  */
 
+
 public abstract class BaseFragment<T extends BasePresenter> extends Fragment
 {
     protected T mPresenter;
@@ -32,6 +33,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment
     protected boolean isUIVisible;
     /**UI是否已被初始化完成**/
     protected boolean isUICreated;
+
+
 
 
     /**

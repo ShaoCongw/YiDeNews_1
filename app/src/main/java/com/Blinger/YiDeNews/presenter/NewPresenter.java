@@ -18,16 +18,29 @@ import io.reactivex.disposables.Disposable;
  * 邮箱：1760567382@qq.com
  * 功能：
  */
+
+/**
+ * modified by 逃课 on 2019/11/18
+ * 增加了加载更多
+ *
+ */
+
 public class NewPresenter extends BasePresenter<BaseView>
+
 {
+    public static int REFRESH = 0;
+    public static int LOAD_MORE = 1;
+    //加载类型：刷新还是加载更多
+    public int requestFlag = REFRESH;
     public NewPresenter(BaseView view)
     {
         super(view);
     }
 
 
-    public void getNewsList(String type,String userId,int index)
+    public void getNewsList(String type,String userId,int index,int flag)
     {
+        requestFlag = flag;
         //LogUtils.d(Constant.debugName+"NewPresenter   ",type);
         //获取头条信息
         if ("top".equals(type)){

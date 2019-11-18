@@ -10,7 +10,6 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
-
 import com.Blinger.base.BaseApplication;
 import com.Blinger.YiDeNews.dao.DaoSession;
 import com.Blinger.YiDeNews.db.DbManager;

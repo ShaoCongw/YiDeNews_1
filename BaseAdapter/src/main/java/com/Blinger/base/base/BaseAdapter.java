@@ -95,7 +95,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
      * @param list 要插入的data项
      * @param index 要插入的位置
      */
-    public void setData(List<T> list, @IntRange(from = 0) int index)
+    public void setData(List<T> list, @IntRange(from = -1) int index)
     {
         if (index < 0 || index >= mList.size())
         {

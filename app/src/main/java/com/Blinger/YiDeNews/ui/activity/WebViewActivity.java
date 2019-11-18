@@ -1,19 +1,24 @@
 package com.Blinger.YiDeNews.ui.activity;
 
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,29 +51,21 @@ import com.Blinger.base.base.BaseView;
 import com.Blinger.base.utils.DialogUtils;
 import com.Blinger.base.utils.LogUtils;
 import com.Blinger.base.utils.TimeUtils;
-import com.tencent.smtt.sdk.WebSettings;
-import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
+import com.tencent.smtt.export.external.interfaces.WebResourceError;
+//import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
+//import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
+//import com.tencent.smtt.sdk.WebSettings;
+//import com.tencent.smtt.sdk.WebView;
+//import com.tencent.smtt.sdk.WebViewClient;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -80,6 +77,10 @@ import io.reactivex.schedulers.Schedulers;
  * 时间：2019/4/3 12:16
  * 邮箱：1760567382@qq.com
  * 功能：
+ */
+
+/**
+ * modified by 逃课 on 2019/11/18
  */
 @SuppressWarnings("ALL")
 @SuppressLint("SetJavaScriptEnabled")
@@ -98,7 +99,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     @Bind(R.id.sv_web)
     ObservableScrollView svWeb;
     @Bind(R.id.rl_rv)
-    RelativeLayout rlRv;
+    LinearLayout rlRv;
     @Bind(R.id.im_zan)
     ImageView imZan;
     @Bind(R.id.tv_zan_num)
@@ -109,19 +110,22 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     TextView bottomView;
     @Bind(R.id.share_iv)
     ImageView shareIv;
-    @Bind(R.id.empty)
-    View empty;
     @Bind(R.id.adjust_type_iv)
     ImageView adjustTypeIv;
-
-
-    private WebView mWebView;
+    @Bind(R.id.ll_loading)
+    LinearLayout llLoading;
+    @Bind(R.id.ll_error)
+    LinearLayout llError;
+    @Bind(R.id.webview)
+    WebView mWebView;
     private NewBean mData;
     private UserTail mUserTail;
     private String uuid;
     private InputTextMsgDialog inputTextMsgDialog;
     private AdjustTypeDialog adjustTypeDialog;
     //private RvAdapter mAdapter;
+    //webview加载网页返回的状态码，200为成功
+    private int htmlCode = 200;
 
     private List<String> userNameList;
     private List<String> timeList;
@@ -169,12 +173,12 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
                 if (oritention == 0x01) {
                     //ScrollView正在向上滑动
                     ///LogUtils.d(Constant.debugName, "ScrollView正在向上滑动");
-                    rlRv.setVisibility(View.GONE);
+                    ObjectAnimator.ofFloat(rlRv, "translationY", rlRv.getHeight()).setDuration(200).start();
 
                 } else if (oritention == 0x10) {
                     // ScrollView正在向下滑动
                     //LogUtils.d(Constant.debugName, "ScrollView正在向下滑动");
-                    rlRv.setVisibility(View.VISIBLE);
+                    ObjectAnimator.ofFloat(rlRv, "translationY", 0).setDuration(200).start();
                 }
             }
         });
@@ -200,31 +204,64 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
 
 
         //隐藏控件
-        rvReview.setVisibility(View.GONE);
-        imZan.setVisibility(View.INVISIBLE);
-        tvZanNum.setVisibility(View.INVISIBLE);
-        empty1.setVisibility(View.INVISIBLE);
-        bottomView.setVisibility(View.INVISIBLE);
+        displayVeiws(false);
 
 
         mTvTitle.setText(mData != null ? mData.getCategory() : "");
         //是否被收藏
         mImgCollection.setImageResource(isCollection() ? R.drawable.icon_collection_2 : R.drawable.icon_collection_1);
 
-        LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT);
-        mWebView = new WebView(this.getApplicationContext());
-        mWebView.setVerticalScrollBarEnabled(false);
-        mWebView.setLayoutParams(mParams);
-        mLayout.addView(mWebView);
-        mWebView.setOverScrollMode(View.OVER_SCROLL_NEVER);
+        //不要通过动态添加，放大字体再缩小后会出现空白
+//        LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT);
+//        mWebView = new WebView(this.getApplicationContext());
+//        mWebView.setVerticalScrollBarEnabled(false);
+//        mWebView.setLayoutParams(mParams);
+//        mLayout.addView(mWebView);
+//        mWebView.setOverScrollMode(View.OVER_SCROLL_NEVER);
 
         mWebView.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String urls) {
                 view.loadUrl(urls);
-                return true;
+                return false;
             }
+
+            //加载完成监听
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                Log.d(Constant.debugName + "httpCode", "onPageFinished" );
+                llLoading.setVisibility(View.GONE);
+                if (htmlCode != 400) {
+                    displayVeiws(true);
+                }
+
+            }
+
+            //根据错误码处理
+            @TargetApi(android.os.Build.VERSION_CODES.M)
+            @Override
+            public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                super.onReceivedHttpError(view, request, errorResponse);
+                // 这个方法在6.0才出现
+                int statusCode = errorResponse.getStatusCode();
+                htmlCode = statusCode;
+//                Log.d(Constant.debugName + "httpCode", "webview返回错误码：" + statusCode);
+                /**
+                 * 不知道为什么加载成功也会返回404
+                 */
+                if (statusCode == 400) {
+
+                    mWebView.setVisibility(View.GONE);
+                    llError.setVisibility(View.VISIBLE);
+                    llLoading.setVisibility(View.GONE);
+                    displayVeiws(false);
+                }
+
+            }
+
+
         });
 
 
@@ -276,11 +313,11 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
         });
 
         mWebView.loadUrl(mData.getUrl());
-        time();
     }
 
     /**
      * 设置网页文件大小
+     *
      * @param type
      */
     private void setType(int type) {
@@ -339,19 +376,28 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     }
 
     //延迟启动recyclerview
-    private void time() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //显示控件
-                imZan.setVisibility(View.VISIBLE);
-                rvReview.setVisibility(View.VISIBLE);
-                tvZanNum.setVisibility(View.VISIBLE);
-                empty1.setVisibility(View.VISIBLE);
-                bottomView.setVisibility(View.VISIBLE);
-            }
-        }, 2000);
+//    private void time() {
+//        Handler handler = new Handler();
+//        handler.postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //显示控件
+//                imZan.setVisibility(View.VISIBLE);
+//                rvReview.setVisibility(View.VISIBLE);
+//                tvZanNum.setVisibility(View.VISIBLE);
+//                empty1.setVisibility(View.VISIBLE);
+//                bottomView.setVisibility(View.VISIBLE);
+//            }
+//        }, 2000);
+//    }
+    //恢复控件显示
+    private void displayVeiws(boolean flag) {
+        imZan.setVisibility(flag ? View.VISIBLE : View.GONE);
+        rvReview.setVisibility(flag ? View.VISIBLE : View.GONE);
+        tvZanNum.setVisibility(flag ? View.VISIBLE : View.GONE);
+        empty1.setVisibility(flag ? View.VISIBLE : View.GONE);
+        bottomView.setVisibility(flag ? View.VISIBLE : View.GONE);
+        rlRv.setVisibility(flag ? View.VISIBLE : View.GONE);
     }
 
     public void initData() {
@@ -437,14 +483,14 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
             case R.id.im_zan:
                 if (imZan.getTag().equals("un_zan")) {
                     imZan.setTag("zan");
-                    imZan.setImageResource(R.drawable.zan_red);
+                    imZan.setImageResource(R.drawable.icon_dz_red);
                     ToastUtil.getInstance().showSuccess(getApplicationContext(), "点赞成功");
                     int i = ++articleAcclaimCount;
                     tvZanNum.setText(i + "赞");//设置赞数
                     mPresenter.postAcclaim(mData.getUniquekey(), uuid, 1, 1);//文章点赞+1
                 } else {
                     imZan.setTag("un_zan");
-                    imZan.setImageResource(R.drawable.zan_grey);
+                    imZan.setImageResource(R.drawable.icon_dz_grey);
 //                    Toast toast = Toast.makeText(this, null, Toast.LENGTH_SHORT);
 //                    toast.setText("取消点赞");
 //                    toast.show();
@@ -533,7 +579,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     public void showData(Object obj) {
         if (obj instanceof List) {
             if (((List) obj).get(0) instanceof CommentBean) {
-                Toast.makeText(this,"评论数量：",Toast.LENGTH_SHORT).show();
+
                 ///userNameList,timeList,acclaimNumList,reviewContentList
                 List<CommentBean> list = (List<CommentBean>) obj;
 
@@ -553,7 +599,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
                     statusList.add(list.get(i).getObject().getAcclaimStatus());
                 }
 
-                imZan.setImageResource((isAcclaim != 0) ? R.drawable.zan_red : R.drawable.zan_grey);
+                imZan.setImageResource((isAcclaim != 0) ? R.drawable.icon_dz_red : R.drawable.icon_dz_grey);
                 if (isAcclaim != 0) {
                     imZan.setTag("zan");
                 } else {
@@ -581,15 +627,15 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
                 break;
             case 1:
                 //上传评论失败
-                Toast.makeText(this,"上传评论失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "上传评论失败", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
                 //获取评论列表失败
-                Toast.makeText(this,"获取评论列表失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "获取评论列表失败", Toast.LENGTH_SHORT).show();
                 break;
             case 3:
                 //更新点赞数失败
-                Toast.makeText(this,"更新文章点赞数失败",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "更新文章点赞数失败", Toast.LENGTH_SHORT).show();
                 break;
             default:
 //                LogUtils.e(Constant.debugName + "type = other", msg);

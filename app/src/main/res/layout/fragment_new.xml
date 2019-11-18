@@ -32,7 +32,8 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:overScrollMode="never" />
+                android:layoutAnimation="@anim/anim_recycle"
+                />
             <RelativeLayout
                 android:id="@+id/rl_top_toast"
                 android:layout_width="match_parent"
