@@ -7,8 +7,10 @@ import android.annotation.TargetApi;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -371,7 +373,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
         mRecyclerViewAdapter.addData(userNameList.size(), location, TimeUtils.getTime() + "", 0, reviewContent, 0, imageType, reviewId);
 
         //Long newsId,Long reviewId,String reviewType,String reviewContent,String UID
-//        Log.d("test",mData.getUniquekey() +","+reviewId +","+reviewContent+","+","+uuid+","+TimeUtils.getTime()+","+IPUtils.getIPAddress(App.getContext()));
+        Log.d("test",mData.getUniquekey() +","+reviewId +","+reviewContent+","+","+uuid+","+TimeUtils.getTime()+","+IPUtils.getIPAddress(App.getContext()));
         mPresenter.postReview(mData.getUniquekey(), reviewId, "1", reviewContent, uuid, TimeUtils.getTime(), IPUtils.getIPAddress(App.getContext()));
     }
 
@@ -448,7 +450,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
         mUserTail.setNewsType(mData.getCategory());
         mUserTail.setUserId(uuid);
         mUserTail.setNewsUrl(mData.getUrl());
-        ///LogUtils.d(Constant.debugName+ " userTail   ",mUserTail.getUserId(), mUserTail.getNewsId(), mUserTail.getNewsTitle(), mUserTail.getNewsType(), mUserTail.getScanTime(), mUserTail.getNewsUrl());
+        LogUtils.d(Constant.debugName+ " userTail   ",mUserTail.getUserId()+","+mUserTail.getNewsId()+","+mUserTail.getNewsTitle()+","+mUserTail.getNewsType()+","+mUserTail.getScanTime()+","+mUserTail.getNewsUrl());
         appendHistory(mData);
         mPresenter.postHistory(mUserTail.getUserId(), mUserTail.getNewsId(), mUserTail.getNewsTitle(), mUserTail.getNewsType(), mUserTail.getScanTime(), mUserTail.getNewsUrl());//需要修改
         mPresenter.getReviewList(mData.getUniquekey(), uuid);//获取评论
@@ -471,7 +473,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
         dao.insert(historyBean);
     }
 
-    @OnClick({R.id.img_finish, R.id.img_collection, R.id.im_zan, R.id.rl_rv, R.id.rv_button, R.id.share_iv, R.id.adjust_type_iv})
+    @OnClick({R.id.img_finish, R.id.img_collection, R.id.im_zan, R.id.rl_rv, R.id.rv_button, R.id.share_iv, R.id.adjust_type_iv,R.id.comment_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_finish:
@@ -500,6 +502,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
                     mPresenter.postAcclaim(mData.getUniquekey(), uuid, 1, -1);//文章点赞-1
                 }
                 break;
+            case R.id.comment_tv:
             case R.id.rv_button:
             case R.id.rl_rv:
                 inputTextMsgDialog.show();
@@ -519,6 +522,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
 
 
                 break;
+
 
         }
     }

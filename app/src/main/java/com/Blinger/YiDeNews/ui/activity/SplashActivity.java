@@ -10,6 +10,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 
 import com.tbruyelle.rxpermissions2.RxPermissions;
@@ -63,8 +64,8 @@ import io.reactivex.schedulers.Schedulers;
  * 功能：启动页
  */
 public class SplashActivity extends BaseActivity<SplashPresenter> implements BaseView {
-    private double latitude = 0.0;
-    private double longitude = 0.0;
+    private double latitude = 0.0;//纬度
+    private double longitude = 0.0;//经度
     public static String location;
     private String uuid;
     private int type;
@@ -120,6 +121,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Bas
 //
 //            LogUtils.d(Constant.debugName, "第一次进入");
             uuid = UUID.randomUUID().toString();
+
             type = (int) (1 + Math.random() * (7 - 1 + 1));
 
             //editor.putBoolean("firstStart", false);
@@ -133,7 +135,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Bas
 //            LogUtils.d(Constant.debugName, "firstStart:" + sharedPreferences.getBoolean("firstStart", true));
 //            LogUtils.d(Constant.debugName, "uuid:" + sharedPreferences.getString("uuid", ""));
 //            LogUtils.d(Constant.debugName, "type:" + sharedPreferences.getInt("type", 0));
-
+            //LogUtils.d(Constant.debugName,uuid+","+location+","+type+","+latitude+","+longitude);
             mPresenter.postNewUser(uuid, location,type,latitude,longitude);
         }
 
