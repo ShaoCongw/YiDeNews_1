@@ -54,7 +54,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends RxAppCompatA
         mPresenter = createPresenter();
         setContentView(getResourceId());
         StatusBarUtils.setColorNoTranslucent(this, Color.WHITE);
-
+        //隐藏自带的actionbar，因为主题要继承夜间模式主题，这里通过代码来隐藏actiobbar
+//        getActionBar().hide();
         ButterKnife.bind(this);
         initView(savedInstanceState);
         initData();
