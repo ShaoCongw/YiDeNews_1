@@ -53,6 +53,7 @@ import com.Blinger.base.base.BaseView;
 import com.Blinger.base.utils.DialogUtils;
 import com.Blinger.base.utils.LogUtils;
 import com.Blinger.base.utils.TimeUtils;
+import com.mingle.widget.LoadingView;
 import com.tencent.smtt.export.external.interfaces.WebResourceError;
 //import com.tencent.smtt.export.external.interfaces.WebResourceRequest;
 //import com.tencent.smtt.export.external.interfaces.WebResourceResponse;
@@ -114,8 +115,10 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
     ImageView shareIv;
     @Bind(R.id.adjust_type_iv)
     ImageView adjustTypeIv;
-    @Bind(R.id.ll_loading)
-    LinearLayout llLoading;
+//    @Bind(R.id.ll_loading)
+//    LinearLayout llLoading;
+    @Bind(R.id.loadView)
+    LoadingView loadingView;
     @Bind(R.id.ll_error)
     LinearLayout llError;
     @Bind(R.id.webview)
@@ -234,7 +237,8 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 Log.d(Constant.debugName + "httpCode", "onPageFinished" );
-                llLoading.setVisibility(View.GONE);
+//                llLoading.setVisibility(View.GONE);
+                loadingView.setVisibility(View.GONE);
                 if (htmlCode != 400) {
                     displayVeiws(true);
                 }
@@ -257,7 +261,7 @@ public class WebViewActivity extends BaseActivity<WebPresenter> implements BaseV
 
                     mWebView.setVisibility(View.GONE);
                     llError.setVisibility(View.VISIBLE);
-                    llLoading.setVisibility(View.GONE);
+                    loadingView.setVisibility(View.GONE);
                     displayVeiws(false);
                 }
 

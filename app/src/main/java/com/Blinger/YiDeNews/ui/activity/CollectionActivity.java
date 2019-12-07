@@ -59,7 +59,6 @@ public class CollectionActivity extends BaseActivity
     {
         super.initView(savedInstanceState);
         mTvTitle.setText(getString(R.string.tv_collect_title));
-        EventBus.getDefault().register(this);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new BaseAdapter<NewBean>(this, R.layout.item_new)
         {
@@ -97,6 +96,7 @@ public class CollectionActivity extends BaseActivity
         NewBeanDao dao = App.mSession.getNewBeanDao();
         List<NewBean> list = dao.loadAll();
         mAdapter.setData(list);
+        mRecyclerView.scheduleLayoutAnimation();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -119,6 +119,6 @@ public class CollectionActivity extends BaseActivity
     protected void onDestroy()
     {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+
     }
 }

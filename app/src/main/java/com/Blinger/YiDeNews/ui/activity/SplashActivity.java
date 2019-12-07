@@ -99,7 +99,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Bas
                 | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
         decorView.setSystemUiVisibility(uiOption);
         RxPermissions permiss = new RxPermissions(this);
-        permiss.request(Manifest.permission.READ_PHONE_STATE)
+        permiss.request(Manifest.permission.READ_PHONE_STATE,android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 .subscribe(new Consumer<Boolean>() {
                     @Override
                     public void accept(Boolean aBoolean) throws Exception {
@@ -130,8 +130,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Bas
             editor.putInt("type",type);
             editor.putInt("typeSize", 2);
             editor.putInt("recommend_type", 0);
-
-
+            editor.putString("signature","用一句话介绍你自己吧");
 //            LogUtils.d(Constant.debugName, "firstStart:" + sharedPreferences.getBoolean("firstStart", true));
 //            LogUtils.d(Constant.debugName, "uuid:" + sharedPreferences.getString("uuid", ""));
 //            LogUtils.d(Constant.debugName, "type:" + sharedPreferences.getInt("type", 0));

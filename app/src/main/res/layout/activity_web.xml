@@ -223,25 +223,29 @@
        />
     </LinearLayout>
 <!--    加载中-->
-    <LinearLayout
-        android:id="@+id/ll_loading"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
-        android:layout_centerInParent="true"
-        >
-        <ImageView
+<!--    <LinearLayout-->
+<!--        android:id="@+id/ll_loading"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="vertical"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        >-->
+<!--        <ImageView-->
 
-            android:layout_width="@dimen/dp_100"
-            android:layout_height="@dimen/dp_100"
-            android:src="@drawable/vector_drawable_icn_loading"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="正在玩命加载中"
-            android:layout_marginTop="@dimen/dp_10"
-            />
-    </LinearLayout>
+<!--            android:layout_width="@dimen/dp_100"-->
+<!--            android:layout_height="@dimen/dp_100"-->
+<!--            android:src="@drawable/vector_drawable_icn_loading"/>-->
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="正在玩命加载中"-->
+<!--            android:layout_marginTop="@dimen/dp_10"-->
+<!--            />-->
+<!--    </LinearLayout>-->
+    <com.mingle.widget.LoadingView
+        android:id="@+id/loadView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
 </RelativeLayout>

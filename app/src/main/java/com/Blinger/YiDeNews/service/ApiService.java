@@ -87,6 +87,13 @@ public interface ApiService
             ,@Query("userUniqueKey")String userId
             ,@Query("value") int value
     );
-
+    //修改用户昵称
+    @Headers({"url_name:other"})
+    @POST("/ydkb/news/changeUsername")
+    @FormUrlEncoded
+    Observable<BaseBean<DataBean<List<UserTailBean>>>> postNewUsername(
+            @Field("userUniqueKey") String userId
+            ,@Field("newUsername") String newUsername
+    );
 }
 

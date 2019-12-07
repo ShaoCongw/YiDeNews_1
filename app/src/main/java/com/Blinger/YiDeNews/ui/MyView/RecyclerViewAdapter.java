@@ -1,6 +1,7 @@
 package com.Blinger.YiDeNews.ui.MyView;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.Blinger.YiDeNews.utils.SharePreferencesUtil;
 import com.Blinger.base.utils.LogUtils;
 import com.Blinger.YiDeNews.R;
 import com.Blinger.YiDeNews.config.Constant;
@@ -27,11 +29,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         private List<Integer> acclaimNumList;
         private List<String> reviewContentList;
         private List<Integer> statusList;
+        private SharedPreferences sharedPreferences;
     private List<String> commentIdList;
 
     public RecyclerViewAdapter(Context context, List<String> userNameList, List<String> timeList, List<Integer> acclaimNumList, List<String> reviewContentList, List<Integer> statusList, List<Integer> headImgTypeList, List<String> commentIdList
                 ) {
             this.context = context;
+            sharedPreferences = context.getSharedPreferences("init", context.MODE_PRIVATE);
 
             this.headImgTypeList = headImgTypeList;
             ///LogUtils.d(Constant.debugName+"RecyclerViewAdapter",this.headImgTypeList.);
@@ -88,7 +92,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if (statusList.get(position) != null){
                     ((ViewHolderOther)holder).acclaimImg.setImageResource((statusList.get(position)) != 0 ? R.drawable.zan_red : R.drawable.zan_grey);
                 }
-                if (headImgTypeList.get(position) != null){
+                //如果当前评论是用户自己发出的，头像设置为用户自己的头像
+                if (userNameList.get(position).equals(sharedPreferences.getString("name", ""))){
+                    ((ViewHolderOther)holder).circleImageView.setImageBitmap(SharePreferencesUtil.getBitmap(context,"avatar"));
+                } else if(headImgTypeList.get(position) != null){
                     int id = 0;
                     switch (headImgTypeList.get(position)){
                         case 1:

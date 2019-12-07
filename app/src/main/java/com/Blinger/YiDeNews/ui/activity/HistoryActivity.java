@@ -55,10 +55,8 @@ public class HistoryActivity extends BaseActivity {
     @Override
     public void initView(Bundle savedInstanceState) {
         super.initView(savedInstanceState);
-
-        super.initView(savedInstanceState);
         mTvTitle.setText(getString(R.string.tv_history_title));
-        EventBus.getDefault().register(this);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new BaseAdapter<NewBean>(this, R.layout.item_new) {
             @Override
@@ -103,6 +101,7 @@ public class HistoryActivity extends BaseActivity {
         }
 
         mAdapter.setData(newBeans);
+        mRecyclerView.scheduleLayoutAnimation();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -120,6 +119,6 @@ public class HistoryActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EventBus.getDefault().unregister(this);
+
     }
 }

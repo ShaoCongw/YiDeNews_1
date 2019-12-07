@@ -5,6 +5,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.ImageView;
@@ -66,15 +67,18 @@ public class BaseViewHolder extends RecyclerView.ViewHolder
      */
     public BaseViewHolder setImageResource(String imageUrls, @IdRes int viewId)
     {
-        imageUrls = imageUrls.replace("\\","");
-        ImageView mView = getView(viewId);
-        //LogUtils.d("Blinger imageurl    ",imageUrls);
 
-        Picasso.with(mContext)
-                .load(imageUrls)
-                .fit()
-                .centerCrop()
-                .into(mView);
+        if (!TextUtils.isEmpty(imageUrls)) {
+            imageUrls = imageUrls.replace("\\", "");
+            ImageView mView = getView(viewId);
+            //LogUtils.d("Blinger imageurl    ",imageUrls);
+
+            Picasso.with(mContext)
+                    .load(imageUrls)
+                    .fit()
+                    .centerCrop()
+                    .into(mView);
+        }
         return this;
     }
 
