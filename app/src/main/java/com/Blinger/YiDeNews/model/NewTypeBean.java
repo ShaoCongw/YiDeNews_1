@@ -3,6 +3,7 @@ package com.Blinger.YiDeNews.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -21,6 +22,16 @@ import java.util.List;
  * 时间：2019/4/2 13:55
  * 邮箱：1760567382@qq.com
  * 功能：
+ * id:1 title头条 des:top
+ * id:2 title社会 des:shehui
+ * id:3 title国内 des:guonei
+ * id:9 title健康 des:jiankang
+ * id:4 title国际 des:guoji
+ * id:6 title军事 des:junshi
+ * id:5 title体育 des:tiyu
+ * id:8 title财经 des:caijing
+ * id:10 title汽车 des:qiche
+ * id:7 title科技 des:keji
  */
 @Entity
 public class NewTypeBean implements Parcelable
@@ -111,6 +122,7 @@ public class NewTypeBean implements Parcelable
     {
         NewTypeBeanDao dao = App.mSession.getNewTypeBeanDao();
         List<NewTypeBean> list = dao.loadAll();
+        //头条,社会,国内,国际,体育,军事,科技,财经,健康,汽车,法制
         if (list == null || list.isEmpty())
         {
             String json = StringUtils.getJson(App.getContent(), "NewType.json");

@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -133,6 +134,7 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
                         .setText(data.getDate(), R.id.item_time)
                         //设置第一张图片
                         .setImageResource(data.getThumbnailPicS(), R.id.item_img)
+                        .setVisible(R.id.item_img, !TextUtils.isEmpty(data.getThumbnailPicS()))
                         //不喜欢这条新闻
                         .setOnClickListener(R.id.none_interest_iv, view -> {
                             FitPopupUtil fitPopupUtil = new FitPopupUtil(getActivity());
@@ -169,6 +171,8 @@ public class NewFragment extends BaseFragment<NewPresenter> implements BaseView 
                     it.putExtra(WebViewActivity.class.getSimpleName(), data);
                     startActivity(it);
                 });
+
+
             }
         };
         //LogUtils.d(Constant.debugName + "NewsFragment   ", "category is " + category);

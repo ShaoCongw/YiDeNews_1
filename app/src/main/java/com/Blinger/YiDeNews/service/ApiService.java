@@ -28,12 +28,15 @@ import retrofit2.http.Query;
 public interface ApiService
 {
     @Headers({"url_name:other"})
-    @GET("/news/news/content/other")
-    Observable<BaseBean<DataBean<List<NewBean>>>> getNewsList(@Query("type") String type, @Query("userUniqueKey") String userId,@Query("recommendType") int index);
+    @GET("/ydkb/news/content/other")
+    Observable<BaseBean<DataBean<List<NewBean>>>> getNewsList(@Query("type") String type
+            , @Query("userUniqueKey") String userId
+            ,@Query("recommendType") int index);
 
     @Headers({"url_name:other"})
     @GET("/news/news/content/top")
-    Observable<BaseBean<DataBean<List<NewBean>>>> getMyNewsList(@Query("userUniqueKey") String userId,@Query("recommendType") int index);
+    Observable<BaseBean<DataBean<List<NewBean>>>> getMyNewsList(@Query("userUniqueKey") String userId
+            ,@Query("recommendType") int index);
 
     @Headers({"url_name:other"})
     @GET("/news/news/distaste")

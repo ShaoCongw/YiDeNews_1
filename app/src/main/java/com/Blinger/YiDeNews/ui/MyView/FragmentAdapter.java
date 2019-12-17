@@ -3,6 +3,7 @@ package com.Blinger.YiDeNews.ui.MyView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 import android.view.ViewGroup;
 
 import com.Blinger.YiDeNews.config.Constant;
@@ -21,7 +22,7 @@ import java.util.List;
  */
 
 public class FragmentAdapter extends FragmentPagerAdapter {
-    private String[] titles = {"头条", "社会", "国内","健康", "国际","军事","体育" , "财经","汽车", "科技"};
+    private String[] titles = {"头条","农业","健康","社会", "国内", "国际","军事","体育" , "财经","汽车", "科技"};
     private HashMap<String, NewFragment> fragments = new HashMap<>();
 
     public FragmentAdapter(FragmentManager fm) {
